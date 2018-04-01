@@ -1,11 +1,11 @@
 import os
 
+# Training Parameters
+learning_rate = 0.001
+num_steps = 2000
 batch_size = 128
-num_classes = 10
-epochs = 100
-data_augmentation = True
-num_predictions = 20
 
-
-save_dir = os.path.join(os.getcwd(), 'saved_models')
-model_name = 'keras_cifar10_trained_model.h5'
+# Network Parameters
+num_input = 1024 # MNIST data input (img shape: 32*32)
+num_classes = 2 # total classes (0 or 1)
+dropout = 0.25 # Dropout, probability to drop a unit

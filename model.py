@@ -1,36 +1,46 @@
 from __future__ import print_function
 
-import keras
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Conv2D, MaxPooling2D
-import os
-import setting
+import tensorflow as tf
+from conv_net import conv_net
+from setting import dropout
 from setting import num_classes
+from setting import learning_rate
 
 
-def to_model(x_train):
-    model = Sequential()
-    model.add(Conv2D(32, (3, 3), padding='same',
-                 input_shape=x_train.shape[1:]))
-    model.add(Activation('relu'))
-    model.add(Conv2D(32, (3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
+def model_fn(features, labels, mode):
+    # Build the neural network
+    # Because Dropout have different behavior at training and prediction time, we
+    # need to create 2 distinct computation graphs that still share the same weights.
+    logits_train = conv_net(features, num_classes, dropout, reuse=False,
+                            is_training=True)
+    logits_test = conv_net(features, num_classes, dropout, reuse=True,
+                           is_training=False)
 
-    model.add(Conv2D(64, (3, 3), padding='same'))
-    model.add(Activation('relu'))
-    model.add(Conv2D(64, (3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
+    # Predictions
+    pred_classes = tf.argmax(logits_test, axis=1)
+    pred_probas = tf.nn.softmax(logits_test)
 
-    model.add(Flatten())
-    model.add(Dense(512))
-    model.add(Activation('relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(num_classes))
-    model.add(Activation('softmax'))
-    model
+    # If prediction mode, early return
+    if mode == tf.estimator.ModeKeys.PREDICT:
+        return tf.estimator.EstimatorSpec(mode, predictions=pred_classes)
 
+        # Define loss and optimizer
+    loss_op = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
+        logits=logits_train, labels=tf.cast(labels, dtype=tf.int32)))
+    optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+    train_op = optimizer.minimize(loss_op,
+                                  global_step=tf.train.get_global_step())
+
+    # Evaluate the accuracy of the model
+    acc_op = tf.metrics.accuracy(labels=labels, predictions=pred_classes)
+
+    # TF Estimators requires to return a EstimatorSpec, that specify
+    # the different ops for training, evaluating, ...
+    estim_specs = tf.estimator.EstimatorSpec(
+        mode=mode,
+        predictions=pred_classes,
+        loss=loss_op,
+        train_op=train_op,
+        eval_metric_ops={'accuracy': acc_op})
+
+    return estim_specs
