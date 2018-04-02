@@ -1,19 +1,21 @@
 # Create the neural network
 import tensorflow as tf
+import numpy as np
 
 def conv_net(x_dict, n_classes, dropout, reuse, is_training):
     # Define a scope for reusing the variables
     with tf.variable_scope('ConvNet', reuse=reuse):
         # TF Estimator input is a dict, in case of multiple inputs
-        x = x_dict['images']
+        x = x_dict['file']
 
-        # MNIST data input is a 1-D vector of 1024 features (32*32 pixels)
+        # MNIST data input is a 1-D vector of 4096 features (64*64 pixels)
         # Reshape to match picture format [Height x Width x Channel]
         # Tensor input become 4-D: [Batch Size, Height, Width, Channel]
-        x = tf.reshape(x, shape=[-1, 32, 32, 1])
+
+        x = tf.cast(tf.reshape(x, shape=[-1, 64, 64, 1]), tf.float32)
 
         # Convolution Layer with 32 filters and a kernel size of 5
-        conv1 = tf.layers.conv2d(x, 32, 5, activation=tf.nn.relu)
+        conv1 = tf.layers.conv2d(x, 64, 5, activation=tf.nn.relu)
         # Max Pooling (down-sampling) with strides of 2 and kernel size of 2
         conv1 = tf.layers.max_pooling2d(conv1, 2, 2)
 
