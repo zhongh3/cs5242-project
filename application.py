@@ -22,7 +22,6 @@ def main():
         batch_size=batch_size, shuffle=False)
     # Use the Estimator 'evaluate' method
     e = model.evaluate(input_fn)
-
     print("Testing Accuracy:", e['accuracy'])
 
 
