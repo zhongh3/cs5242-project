@@ -2,7 +2,7 @@ import tensorflow as tf
 from model import model_fn
 from setting import batch_size
 from setting import num_steps
-from load_data import load_data
+from load_data import load_train_data
 import numpy as np
 
 # Import MNIST data
@@ -10,16 +10,9 @@ from tensorflow.examples.tutorials.mnist import input_data
 # mnist = input_data.read_data_sets("/tmp/data/", one_hot=False)
 
 def main():
-    x_train, y_train, x_test, y_test = load_data()
+    # x: input;     y: label
+    x_train, y_train, x_test, y_test = load_train_data()
     model = tf.estimator.Estimator(model_fn)
-    # x_train_cast = np.nan_to_num(x_train.reshape(500, 4096))
-    # y_train_cast = np.nan_to_num(y_train.reshape(500, ))
-    #
-    # x_test_cast = np.nan_to_num(x_test.reshape(500, 4096))
-    # y_test_cast = np.nan_to_num(y_test.reshape(500, ))
-    # print("hehehehe")
-    # print(y_train_cast.shape)
-    # print(x_train_cast.shape)
 
     # print("hahahahha")
     # print(mnist.train.images.shape)
