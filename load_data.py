@@ -17,11 +17,16 @@ def load_train_data():
 
     ###############################################
     # sample data for local debugging
-    inputs = read_data('sample_data.csv', in_height, in_width)
-    labels = read_label('sample_label.csv')
+    # inputs = read_data('sample_data.csv', in_height, in_width)
+    # labels = read_label('sample_label.csv')
+    ###############################################
+    # load a portion of train data for local debugging
+    # use nrows to adjust the number of samples to load
+    inputs = read_data('train.csv', in_height, in_width, nrows=3000)
+    labels = read_label('train_label.csv', nrows=3000)
     ###############################################
     # actual data for training and testing
-    # data = read_data('train.csv', in_height, in_width)
+    # inputs = read_data('train.csv', in_height, in_width)
     # labels = read_label('train_label.csv')
     ###############################################
 
@@ -51,12 +56,12 @@ def load_test_data():
     return test_data
 
 
-def read_data(file_name, in_height, in_width):
+def read_data(file_name, in_height, in_width, nrows):
     directory = './data/'
     path = directory + file_name
     # print(path)
 
-    df = pd.read_csv(path, header=None, names=list(range(in_height * in_width)))  # DataFrame
+    df = pd.read_csv(path, header=None, names=list(range(in_height * in_width)), nrows=nrows)  # DataFrame
     print(df.shape)
 
     inputs = np.nan_to_num(np.asarray(df))
@@ -65,12 +70,12 @@ def read_data(file_name, in_height, in_width):
     return inputs  # numpy array: (n, (in_height x in_width))
 
 
-def read_label(file_name):
+def read_label(file_name, nrows):
     directory = './data/'
     path = directory + file_name
     # print(path)
 
-    df = pd.read_csv(path, header=0, usecols=[1])  # DataFrame
+    df = pd.read_csv(path, header=0, usecols=[1], nrows=nrows)  # DataFrame
     #print(df.shape)
 
     labels = np.nan_to_num(np.asarray(df).reshape(-1))
