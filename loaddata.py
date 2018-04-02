@@ -1,2 +1,0 @@
-def loaddata():
-    raise NotImplementedError
