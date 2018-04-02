@@ -26,7 +26,7 @@ def read_data(file_name, in_height, in_width):
     print(path)
 
     # df = pd.read_csv(path, header=None)
-    df = pd.read_csv(path, header=None, usecols=list(range(in_height * in_width)))  # DataFrame
+    df = pd.read_csv(path, header=None, names=list(range(in_height * in_width)))  # DataFrame
     print(df.shape)
 
     inputs = np.asarray(df)
