@@ -12,14 +12,14 @@ from tensorflow.examples.tutorials.mnist import input_data
 def main():
     x_train, y_train, x_test, y_test = load_data()
     model = tf.estimator.Estimator(model_fn)
-    x_train_cast = np.nan_to_num(x_train.reshape(500, 4096))
-    y_train_cast = np.nan_to_num(y_train.reshape(500, ))
-
-    x_test_cast = np.nan_to_num(x_test.reshape(500, 4096))
-    y_test_cast = np.nan_to_num(y_test.reshape(500, ))
-    print("hehehehe")
-    print(y_train_cast.shape)
-    print(x_train_cast.shape)
+    # x_train_cast = np.nan_to_num(x_train.reshape(500, 4096))
+    # y_train_cast = np.nan_to_num(y_train.reshape(500, ))
+    #
+    # x_test_cast = np.nan_to_num(x_test.reshape(500, 4096))
+    # y_test_cast = np.nan_to_num(y_test.reshape(500, ))
+    # print("hehehehe")
+    # print(y_train_cast.shape)
+    # print(x_train_cast.shape)
 
     # print("hahahahha")
     # print(mnist.train.images.shape)
@@ -29,7 +29,7 @@ def main():
 
     # Define the input function for training
     input_fn = tf.estimator.inputs.numpy_input_fn(
-        x= {'file': x_train_cast}, y=y_train_cast,
+        x= {'file': x_train}, y=y_train,
         batch_size=batch_size, num_epochs=5, shuffle=True)
     # Train the Model
     model.train(input_fn, steps=num_steps)
@@ -37,7 +37,7 @@ def main():
     # Evaluate the Model
     # Define the input function for evaluating
     input_fn = tf.estimator.inputs.numpy_input_fn(
-        x={'file': x_test_cast}, y=y_test_cast,
+        x={'file': x_test}, y=y_test,
         batch_size=batch_size, shuffle=False)
     # Use the Estimator 'evaluate' method
     e = model.evaluate(input_fn)

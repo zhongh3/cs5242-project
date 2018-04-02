@@ -1,7 +1,5 @@
-# import tensorflow as tf
 import numpy as np
 import pandas as pd
-# import os
 
 
 def load_data():
@@ -12,10 +10,19 @@ def load_data():
     in_height = 64
     in_width = 64
 
+    ###############################################
+    # sample data for local debugging
     x_train = read_data('sample_data.csv', in_height, in_width)
     y_train = read_label('sample_label.csv')
     x_test = read_data('sample_data.csv', in_height, in_width)
-    y_test = read_label('sample_label.csv')
+    y_test = np.zeros(y_train.shape[0])
+    ###############################################
+    # actual data for training and testing
+    # x_train = read_data('train.csv', in_height, in_width)
+    # y_train = read_label('train_label.csv')
+    # x_test = read_data('test.csv', in_height, in_width)
+    # y_test = np.zeros(y_train.shape[0])
+    ###############################################
 
     return x_train, y_train, x_test, y_test
 
@@ -23,33 +30,27 @@ def load_data():
 def read_data(file_name, in_height, in_width):
     directory = './data/'
     path = directory + file_name
-    print(path)
+    # print(path)
 
-    # df = pd.read_csv(path, header=None)
     df = pd.read_csv(path, header=None, names=list(range(in_height * in_width)))  # DataFrame
     print(df.shape)
 
-    inputs = np.asarray(df)
+    inputs = np.nan_to_num(np.asarray(df))
+    print(path, " - data shape = ", inputs.shape)
 
-    inputs_3d = inputs.reshape((inputs.shape[0], in_height, in_width))
-    print(inputs_3d.shape)
-
-    return inputs_3d  # numpy array: n x in_height x in_wdith
+    return inputs  # numpy array: (n, (in_height x in_wdith))
 
 
 def read_label(file_name):
     directory = './data/'
     path = directory + file_name
-    print(path)
+    # print(path)
 
     df = pd.read_csv(path, header=0, usecols=[1])  # DataFrame
+    print(df.shape)
 
-    labels = np.asarray(df)
-    print(labels.shape)
+    labels = np.nan_to_num(np.asarray(df).reshape(-1))
+    print(path, " - label shape = ", labels.shape)
 
-    return labels  # numpy array: n x 1
-
-
-# def main():
-#     load_data()
+    return labels  # numpy array: (n,)
 
