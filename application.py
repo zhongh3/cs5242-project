@@ -1,13 +1,12 @@
-import loaddata
-
 import tensorflow as tf
 from model import model_fn
 from setting import batch_size
 from setting import num_steps
+from load_data import load_data
 
 
 def main():
-    x_train, y_train, x_test, y_test = loaddata()
+    x_train, y_train, x_test, y_test = load_data()
     model = tf.estimator.Estimator(model_fn)
     # Define the input function for training
     input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -24,6 +23,8 @@ def main():
     # Use the Estimator 'evaluate' method
     e = model.evaluate(input_fn)
     print("Testing Accuracy:", e['accuracy'])
+
+
 if __name__ == '__main__':
     main()
 
