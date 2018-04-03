@@ -34,6 +34,8 @@ def model_fn(features, labels, mode):
     # Evaluate the accuracy of the model
     acc_op = tf.metrics.accuracy(labels=labels, predictions=pred_classes)
 
+    print("Current accuracy of model", acc_op)
+
     # TF Estimators requires to return a EstimatorSpec, that specify
     # the different ops for training, evaluating, ...
     estim_specs = tf.estimator.EstimatorSpec(
