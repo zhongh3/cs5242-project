@@ -22,7 +22,7 @@ def model_fn(features, labels, mode):
 
     # If prediction mode, early return
     if mode == tf.estimator.ModeKeys.PREDICT:
-        return tf.estimator.EstimatorSpec(mode, predictions=pred_classes)
+        return tf.estimator.EstimatorSpec(mode, predictions=pred_probas)
 
         # Define loss and optimizer
     loss_op = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(

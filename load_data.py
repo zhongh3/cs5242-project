@@ -22,8 +22,8 @@ def load_train_data():
     ###############################################
     # load a portion of train data for local debugging
     # use nrows to adjust the number of samples to load
-    inputs = read_data('train.csv', in_height, in_width, nrows=3000)
-    labels = read_label('train_label.csv', nrows=3000)
+    inputs = read_data('train.csv', in_height, in_width, nrows=1000)
+    labels = read_label('train_label.csv', nrows=1000)
     ###############################################
     # actual data for training and testing
     # inputs = read_data('train.csv', in_height, in_width)
@@ -51,8 +51,8 @@ def load_test_data():
     in_height = 64
     in_width = 64
 
-    test_data = read_data('test.csv', in_height, in_width)
-
+    test_data = read_data('test.csv', in_height, in_width, nrows=30)
+    # test_data = read_data('test.csv', in_height, in_width)
     return test_data
 
 
