@@ -17,17 +17,12 @@ def load_train_data():
 
     ###############################################
     # sample data for local debugging
-    # inputs = read_data('sample_data.csv', in_height, in_width)
-    # labels = read_label('sample_label.csv')
-    ###############################################
-    # load a portion of train data for local debugging
-    # use nrows to adjust the number of samples to load
-    inputs = read_data('train.csv', in_height, in_width, nrows=1000)
-    labels = read_label('train_label.csv', nrows=1000)
+    # inputs = read_data('sample_data.csv', in_height, in_width, nrows=None)
+    # labels = read_label('sample_label.csv', nrows=None)
     ###############################################
     # actual data for training and testing
-    # inputs = read_data('train.csv', in_height, in_width)
-    # labels = read_label('train_label.csv')
+    inputs = read_data('train.csv', in_height, in_width, nrows=None)
+    labels = read_label('train_label.csv', nrows=None)
     ###############################################
 
     np.random.seed(0)
@@ -51,8 +46,9 @@ def load_test_data():
     in_height = 64
     in_width = 64
 
-    test_data = read_data('test.csv', in_height, in_width, nrows=30)
-    # test_data = read_data('test.csv', in_height, in_width)
+    # test_data = read_data('test.csv', in_height, in_width, nrows=100)
+    test_data = read_data('test.csv', in_height, in_width, nrows=None)
+
     return test_data
 
 
