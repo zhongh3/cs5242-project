@@ -1,0 +1,13 @@
+#!/bin/bash
+#PBS -P Personal
+#PBS -q gpu
+#PBS -l select=1:ncpus=24:mem=96G:ngpus=1
+#PBS -l walltime=01:00:00
+#PBS -N cs5242_project
+#PBS -o ~/cs5242/output.o
+#PBS -e ~/cs5242/error.e
+
+
+cd $PBS_O_WORKDIR
+module load tensorflow/1.4
+python application.py
