@@ -1,14 +1,12 @@
 import tensorflow as tf
+import csv
+
 from model import model_fn
 from setting import batch_size
 from setting import num_steps
 from load_data import load_train_data
 from load_data import load_test_data
 
-import csv
-# Import MNIST data
-from tensorflow.examples.tutorials.mnist import input_data
-# mnist = input_data.read_data_sets("/tmp/data/", one_hot=False)
 
 def main():
     # x: input;     y: label
@@ -16,11 +14,6 @@ def main():
     model = tf.estimator.Estimator(model_fn)
 
     x_predict=load_test_data()
-    # print("hahahahha")
-    # print(mnist.train.images.shape)
-    # print(mnist.train.labels.shape)
-    # print(mnist.test.images.shape)
-    # print(mnist.test.labels.shape)
 
     # Define the input function for training
     input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -51,6 +44,7 @@ def main():
         for result in results:
             csv_writer.writerow([i, result[1]])
             i = i+1
+
 
 if __name__ == '__main__':
     main()

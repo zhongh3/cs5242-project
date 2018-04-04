@@ -2,7 +2,7 @@
 #PBS -P Personal
 #PBS -q gpu
 #PBS -l select=1:ncpus=24:mem=96G:ngpus=1
-#PBS -l walltime=01:00:00
+#PBS -l walltime=00:20:00
 #PBS -N cs5242_project
 #PBS -j oe
 
