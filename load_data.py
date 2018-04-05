@@ -16,6 +16,7 @@ def load_train_data():
 
     # train_ratio = 0.8 --> split data as 80% training, 20% testing
 
+    print("Start loading data...")
     ###############################################
     # sample data for local debugging
     # inputs = read_data('sample_data.csv', in_height, in_width, nrows=None)
@@ -59,7 +60,7 @@ def read_data(file_name, in_height, in_width, nrows):
     # print(path)
 
     df = pd.read_csv(path, header=None, names=list(range(in_height * in_width)), nrows=nrows)  # DataFrame
-    print(df.shape)
+    # print(df.shape)
 
     inputs = np.nan_to_num(np.asarray(df))
     print(path, " - data shape = ", inputs.shape)
