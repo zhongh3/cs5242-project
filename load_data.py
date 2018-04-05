@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from setting import num_rows
+from setting import train_ratio
 
 def load_train_data():
     # To load train data and split it for training and testing
@@ -13,7 +15,6 @@ def load_train_data():
     in_width = 64
 
     # train_ratio = 0.8 --> split data as 80% training, 20% testing
-    train_ratio = 0.8
 
     ###############################################
     # sample data for local debugging
@@ -21,8 +22,8 @@ def load_train_data():
     # labels = read_label('sample_label.csv', nrows=None)
     ###############################################
     # actual data for training and testing
-    inputs = read_data('train.csv', in_height, in_width, nrows=None)
-    labels = read_label('train_label.csv', nrows=None)
+    inputs = read_data('train.csv', in_height, in_width, nrows=num_rows)
+    labels = read_label('train_label.csv', nrows=num_rows)
     ###############################################
 
     np.random.seed(0)
@@ -47,7 +48,7 @@ def load_test_data():
     in_width = 64
 
     # test_data = read_data('test.csv', in_height, in_width, nrows=100)
-    test_data = read_data('test.csv', in_height, in_width, nrows=None)
+    test_data = read_data('test.csv', in_height, in_width, nrows=num_rows)
 
     return test_data
 

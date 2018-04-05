@@ -4,6 +4,7 @@ import csv
 from model import model_fn
 from setting import batch_size
 from setting import num_steps
+from setting import train_epoch
 from load_data import load_train_data
 from load_data import load_test_data
 
@@ -18,7 +19,7 @@ def main():
     # Define the input function for training
     input_fn = tf.estimator.inputs.numpy_input_fn(
         x= {'file': x_train}, y=y_train,
-        batch_size=batch_size, num_epochs=5, shuffle=True)
+        batch_size=batch_size, num_epochs=train_epoch, shuffle=True)
     # Train the Model
     model.train(input_fn, steps=num_steps)
 
