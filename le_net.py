@@ -1,5 +1,6 @@
 # Create the neural network
 import tensorflow as tf
+import tensorflow.contrib.slim as slim
 import numpy as np
 
 def le_net(x_dict, n_classes, dropout, reuse, is_training):
@@ -14,23 +15,13 @@ def le_net(x_dict, n_classes, dropout, reuse, is_training):
 
         x = tf.cast(tf.reshape(x, shape=[-1, 64, 64, 1]), tf.float32)
 
-        # Convolution Layer with 32 filters and a kernel size of 5
-        conv1 = tf.layers.conv2d(x, 6, [5, 5], 1)
-        # Max Pooling (down-sampling) with strides of 2 and kernel size of 2
-        conv2 = tf.layers.max_pooling2d(conv1, 2, 2)
-
-        # Convolution Layer with 64 filters and a kernel size of 3
-        conv3 = tf.layers.conv2d(conv2, 16, [5, 5], 1)
-        # Max Pooling (down-sampling) with strides of 2 and kernel size of 2
-        conv4 = tf.layers.max_pooling2d(conv3, 2, 2)
-
-        conv5 = tf.layers.conv2d(conv4, 120, [5, 5], 1)
-        conv6 = tf.layers.flatten(conv5)
-
-        fc1 = tf.layers.dense(conv6, 84)
-        fc2 = tf.layers.dropout(fc1, dropout)
-
-        # Output layer, class prediction
-        out = tf.layers.dense(fc2, n_classes)
-
+        net = slim.conv2d(x, 6, [5, 5], 1, padding='SAME', scope='conv1')
+        net = slim.max_pool2d(net, [2, 2], scope='pool2')
+        net = slim.conv2d(net, 16, [5, 5], 1, scope='conv3')
+        net = slim.max_pool2d(net, [2, 2], scope='pool4')
+        net = slim.conv2d(net, 120, [5, 5], 1, scope='conv5')
+        net = slim.flatten(net, scope='flat6')
+        net = slim.fully_connected(net, 84, scope='fc7')
+        net = slim.dropout(net, dropout, is_training=is_training, scope='dropout8')
+        out = slim.fully_connected(net, 2, scope='fc9')
     return out
