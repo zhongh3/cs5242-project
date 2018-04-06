@@ -21,7 +21,7 @@ def main():
         x= {'file': x_train}, y=y_train,
         batch_size=batch_size, num_epochs=train_epoch, shuffle=True)
     # Train the Model
-    model.train(input_fn, steps=num_steps)
+    model.train(input_fn)
 
     # Evaluate the Model
     # Define the input function for evaluating
