@@ -12,7 +12,10 @@ from load_data import load_test_data
 def main():
     # x: input;     y: label
     x_train, y_train, x_test, y_test = load_train_data()
+
     model = tf.estimator.Estimator(model_fn)
+    # rc = tf.estimator.RunConfig(model_dir="./model", keep_checkpoint_max=max_ckpt, save_checkpoints_steps=ckpt_steps)
+    # model = tf.estimator.Estimator(model_fn, config=rc)
 
     x_predict=load_test_data()
 
@@ -21,7 +24,7 @@ def main():
         x= {'file': x_train}, y=y_train,
         batch_size=batch_size, num_epochs=train_epoch, shuffle=True)
     # Train the Model
-    model.train(input_fn)
+    model.train(input_fn, steps=num_steps)
 
     # Evaluate the Model
     # Define the input function for evaluating
