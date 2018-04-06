@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 import tensorflow as tf
-# from conv_net import conv_net
+from conv_net import conv_net
 from le_net import le_net
 from setting import dropout
 from setting import num_classes
@@ -13,8 +13,14 @@ def model_fn(features, labels, mode):
     # Build the neural network
     # Because Dropout have different behavior at training and prediction time, we
     # need to create 2 distinct computation graphs that still share the same weights.
-    logits_train = le_net(features, num_classes, dropout, reuse=False, is_training=True)
-    logits_test = le_net(features, num_classes, dropout, reuse=True, is_training=False)
+
+    # LeNet:
+    # logits_train = le_net(features, num_classes, dropout, reuse=False, is_training=True)
+    # logits_test = le_net(features, num_classes, dropout, reuse=True, is_training=False)
+
+    # ConvNet:
+    logits_train = conv_net(features, num_classes, dropout, reuse=False, is_training=True)
+    logits_test = conv_net(features, num_classes, dropout, reuse=True, is_training=False)
 
     # Predictions
     pred_classes = tf.argmax(logits_test, axis=1)
