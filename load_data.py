@@ -7,7 +7,6 @@ def load_train_data(in_height, in_width, num_rows, train_ratio):
     # x: input;     y: label
     x_train, y_train, x_test, y_test = None, None, None, None
 
-
     print("Start loading data...")
     ###############################################
     # sample data for local debugging
