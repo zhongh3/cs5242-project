@@ -1,20 +1,12 @@
 import numpy as np
 import pandas as pd
 
-from setting import num_rows
-from setting import train_ratio
 
-def load_train_data():
+def load_train_data(in_height, in_width, num_rows, train_ratio):
     # To load train data and split it for training and testing
     # x: input;     y: label
     x_train, y_train, x_test, y_test = None, None, None, None
 
-    # sample length to read = in_height x in_width, the rest will be truncated
-    # e.g. 64 x 64 = 4096 bytes per sample
-    in_height = 64
-    in_width = 64
-
-    # train_ratio = 0.8 --> split data as 80% training, 20% testing
 
     print("Start loading data...")
     ###############################################
@@ -38,17 +30,10 @@ def load_train_data():
     return x_train, y_train, x_test, y_test
 
 
-def load_test_data():
+def load_test_data(in_height, in_width, num_rows):
     # To load test data for prediction
     test_data = None
 
-    # sample length to read = in_height x in_width, the rest will be truncated
-    # e.g. 64 x 64 = 4096 bytes per sample
-    # keep the same size as in load_train_data()
-    in_height = 64
-    in_width = 64
-
-    # test_data = read_data('test.csv', in_height, in_width, nrows=100)
     test_data = read_data('test.csv', in_height, in_width, nrows=num_rows)
 
     return test_data

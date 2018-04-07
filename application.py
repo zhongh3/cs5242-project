@@ -2,22 +2,20 @@ import tensorflow as tf
 import csv
 
 from model import model_fn
-from setting import batch_size
-from setting import num_steps
-from setting import train_epoch
-from load_data import load_train_data
-from load_data import load_test_data
+from setting import batch_size, num_steps, train_epoch
+from setting import in_height, in_width, num_rows, train_ratio
+from load_data import load_train_data, load_test_data
 
 
 def main():
     # x: input;     y: label
-    x_train, y_train, x_test, y_test = load_train_data()
+    x_train, y_train, x_test, y_test = load_train_data(in_height, in_width, num_rows, train_ratio)
 
     model = tf.estimator.Estimator(model_fn)
     # rc = tf.estimator.RunConfig(model_dir="./model", keep_checkpoint_max=max_ckpt, save_checkpoints_steps=ckpt_steps)
     # model = tf.estimator.Estimator(model_fn, config=rc)
 
-    x_predict=load_test_data()
+    x_predict=load_test_data(in_height, in_width, num_rows)
 
     # Define the input function for training
     input_fn = tf.estimator.inputs.numpy_input_fn(

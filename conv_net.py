@@ -1,9 +1,9 @@
 # Create the neural network
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
-import numpy as np
 
-def conv_net(x_dict, n_classes, dropout, reuse, is_training):
+
+def conv_net(x_dict, in_height, in_width, n_classes, dropout, reuse, is_training):
     # Define a scope for reusing the variables
     with tf.variable_scope('ConvNet', reuse=reuse):
         # TF Estimator input is a dict, in case of multiple inputs
@@ -13,10 +13,10 @@ def conv_net(x_dict, n_classes, dropout, reuse, is_training):
         # Reshape to match picture format [Height x Width x Channel]
         # Tensor input become 4-D: [Batch Size, Height, Width, Channel]
 
-        x = tf.cast(tf.reshape(x, shape=[-1, 64, 64, 1]), tf.float32)
+        x = tf.cast(tf.reshape(x, shape=[-1, in_height, in_width, 1]), tf.float32)
 
         # Convolution Layer with 32 filters and a kernel size of 5
-        conv1 = tf.layers.conv2d(x, 64, 5, activation=tf.nn.relu,
+        conv1 = tf.layers.conv2d(x, 32, 5, activation=tf.nn.relu,
                                  kernel_initializer=tf.truncated_normal_initializer(stddev=0.01),
                                  kernel_regularizer=slim.l2_regularizer(0.0005))
         # Max Pooling (down-sampling) with strides of 2 and kernel size of 2

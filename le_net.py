@@ -1,9 +1,9 @@
 # Create the neural network
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
-import numpy as np
 
-def le_net(x_dict, n_classes, dropout, reuse, is_training):
+
+def le_net(x_dict, in_height, in_width, n_classes, dropout, reuse, is_training):
     # Define a scope for reusing the variables
     with tf.variable_scope('LetNet', reuse=reuse):
         # TF Estimator input is a dict, in case of multiple inputs
@@ -13,7 +13,7 @@ def le_net(x_dict, n_classes, dropout, reuse, is_training):
         # Reshape to match picture format [Height x Width x Channel]
         # Tensor input become 4-D: [Batch Size, Height, Width, Channel]
 
-        x = tf.cast(tf.reshape(x, shape=[-1, 64, 64, 1]), tf.float32)
+        x = tf.cast(tf.reshape(x, shape=[-1, in_height, in_width, 1]), tf.float32)
 
         net = slim.conv2d(x, 6, [5, 5], 1, padding='SAME', scope='conv1',
                           weights_initializer=tf.truncated_normal_initializer(stddev=0.01),
