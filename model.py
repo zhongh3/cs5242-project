@@ -4,7 +4,7 @@ import tensorflow as tf
 from conv_net import conv_net
 from le_net import le_net
 from setting import dropout, num_classes, learning_rate
-from setting import max_ckpt, ckpt_steps, in_height, in_width
+from setting import in_height, in_width
 
 tf.logging.set_verbosity("INFO")
 

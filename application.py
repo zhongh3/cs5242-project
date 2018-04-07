@@ -40,7 +40,7 @@ def main():
     print("global_step:", total_steps)
     print('Testing Accuracy = ', e['accuracy'], "Loss = ", e['loss'])
 
-    #
+    # Evaluate Checkpoints
     total_ckpts = total_steps // ckpt_steps
     eval_results = np.zeros((total_ckpts, 3))
 
