@@ -47,7 +47,8 @@ def read_data(file_name, in_height, in_width, nrows):
     df = pd.read_csv(path, header=None, names=list(range(in_height * in_width)), nrows=nrows)  # DataFrame
     # print(df.shape)
 
-    inputs = np.nan_to_num(np.asarray(df))
+    # inputs = np.nan_to_num(np.asarray(df))
+    inputs = df.fillna(0).as_matrix()
     print(path, " - data shape = ", inputs.shape)
 
     return inputs  # numpy array: (n, (in_height x in_width))
@@ -61,7 +62,9 @@ def read_label(file_name, nrows):
     df = pd.read_csv(path, header=0, usecols=[1], nrows=nrows)  # DataFrame
     #print(df.shape)
 
-    labels = np.nan_to_num(np.asarray(df).reshape(-1))
+    # labels = np.nan_to_num(np.asarray(df).reshape(-1))
+    labels = df.fillna(0).as_matrix().reshape(-1)
+
     print(path, " - label shape = ", labels.shape)
 
     return labels  # numpy array: (n,)
