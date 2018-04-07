@@ -7,6 +7,8 @@ from setting import in_height, in_width, num_rows, train_ratio
 from load_data import load_train_data, load_test_data
 
 
+tf.logging.set_verbosity("INFO")
+
 def main():
     # x: input;     y: label
     x_train, y_train, x_test, y_test = load_train_data(in_height, in_width, num_rows, train_ratio)

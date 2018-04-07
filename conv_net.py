@@ -2,6 +2,7 @@
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
 
+tf.logging.set_verbosity("INFO")
 
 def conv_net(x_dict, in_height, in_width, n_classes, dropout, reuse, is_training):
     # Define a scope for reusing the variables
