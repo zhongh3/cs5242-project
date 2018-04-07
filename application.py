@@ -45,7 +45,7 @@ def main():
     eval_results = np.zeros((total_ckpts, 3))
 
     for i in range(0, total_ckpts):
-        j = (i + 1) * ckpt_steps + 1
+        j = np.min([(i + 1) * ckpt_steps + 1, total_steps])
         ckpt_path = './model/model.ckpt-' + str(j)
         print(ckpt_path)
         e = model.evaluate(input_fn, checkpoint_path=ckpt_path)
