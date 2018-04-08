@@ -3,6 +3,7 @@ from __future__ import print_function
 import tensorflow as tf
 from conv_net import conv_net
 from le_net import le_net
+from alex_net import alex_net
 from setting import dropout, num_classes, learning_rate
 from setting import in_height, in_width
 
@@ -21,6 +22,10 @@ def model_fn(features, labels, mode):
     # ConvNet:
     # logits_train = conv_net(features, in_height, in_width, num_classes, dropout, reuse=False, is_training=True)
     # logits_test = conv_net(features, in_height, in_width, num_classes, dropout, reuse=True, is_training=False)
+
+    # AlexNet:
+    # logits_train = alex_net(features, in_height, in_width, num_classes, dropout, reuse=False, is_training=True)
+    # logits_test = alex_net(features, in_height, in_width, num_classes, dropout, reuse=True, is_training=False)
 
     # Predictions
     pred_classes = tf.argmax(logits_test, axis=1)
