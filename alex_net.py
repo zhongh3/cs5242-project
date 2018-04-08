@@ -34,7 +34,7 @@ def alex_net(x_dict, in_height, in_width, n_classes, dropout, reuse, is_training
                           weights_regularizer=slim.l2_regularizer(0.0005))  # 256x3x3
         net = slim.max_pool2d(net, [3, 3], 1, scope='pool8')    # stride = 2
 
-        net = slim.conv2d(net, 2048, [2, 2], padding='SAME',
+        net = slim.conv2d(net, 2048, [2, 2], padding='VALID',
                           weights_initializer=tf.truncated_normal_initializer(stddev=0.005),
                           biases_initializer=tf.constant_initializer(0.1), scope='fc9')  # 4096x5x5
         net = slim.dropout(net, dropout, is_training=is_training, scope='dropout10')
