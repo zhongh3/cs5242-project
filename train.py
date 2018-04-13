@@ -1,27 +1,23 @@
 import tensorflow as tf
 
-from model import model_fn
+from model import build_model
 from setting import batch_size, num_steps, train_epoch
 from setting import in_height, in_width, num_rows, train_ratio, max_ckpt, ckpt_steps
-from load_data import load_train_data, load_test_data
-
+from load_data import load_train_data
 
 tf.logging.set_verbosity("INFO")
 
-def main():
+
+def train():
     # x: input;     y: label
     x_train, y_train, x_test, y_test = load_train_data(in_height, in_width, num_rows, train_ratio)
 
-    model = tf.estimator.Estimator(model_fn)
-    rc = tf.estimator.RunConfig(model_dir="./model", keep_checkpoint_max=max_ckpt, save_checkpoints_steps=ckpt_steps)
-    model = tf.estimator.Estimator(model_fn, config=rc)
-
-    x_predict = load_test_data(in_height, in_width, num_rows)
-
+    model = build_model()
     # Define the input function for training
     input_fn = tf.estimator.inputs.numpy_input_fn(
         x={'file': x_train}, y=y_train,
         batch_size=batch_size, num_epochs=train_epoch, shuffle=True)
+
     # Train the Model
     model.train(input_fn, steps=num_steps)
 
@@ -36,5 +32,6 @@ def main():
     print("global_step:", total_steps)
     print('Testing Accuracy = ', e['accuracy'], "Loss = ", e['loss'])
 
+
 if __name__ == '__main__':
-    main()
+    train()

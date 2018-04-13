@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import csv
 
-from model import model_fn
+from model_fn import model_fn
 from setting import batch_size, num_steps, train_epoch
 from setting import in_height, in_width, num_rows, train_ratio, max_ckpt, ckpt_steps
 from load_data import load_train_data, load_test_data
