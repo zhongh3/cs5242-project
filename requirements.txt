@@ -1,0 +1,5 @@
+jupyter>=1.0.0
+tensorflow>=1.4.0
+pandas>=0.21.0
+numpy>=1.13.3
+
