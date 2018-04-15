@@ -37,6 +37,7 @@ def load_test_data(in_height, in_width, num_rows):
 
 def read_data(file_name, in_height, in_width, nrows):
     directory = './data/'
+    # directory = './'
     path = directory + file_name
 
     df = pd.read_csv(path, header=None, names=list(range(in_height * in_width)), nrows=nrows)  # DataFrame
@@ -50,6 +51,7 @@ def read_data(file_name, in_height, in_width, nrows):
 
 def read_label(file_name, nrows):
     directory = './data/'
+    # directory = './'
     path = directory + file_name
 
     df = pd.read_csv(path, header=0, usecols=[1], nrows=nrows)  # DataFrame
