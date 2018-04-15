@@ -3,52 +3,48 @@ from __future__ import print_function
 import tensorflow as tf
 from conv_net import conv_net
 from le_net import le_net
-from alex_net import alex_net
-from setting import dropout, num_classes, learning_rate
-from setting import in_height, in_width
+from setting import in_height, in_width, num_classes, dropout, learning_rate
 
 tf.logging.set_verbosity("INFO")
 
 
 def model_fn(features, labels, mode):
     # Build the neural network
-    # Because Dropout have different behavior at training and prediction time, we
-    # need to create 2 distinct computation graphs that still share the same weights.
 
-    # LeNet:
-    # logits_train = le_net(features, in_height, in_width, num_classes, dropout, reuse=False, is_training=True)
-    # logits_test = le_net(features, in_height, in_width, num_classes, dropout, reuse=True, is_training=False)
+    # dropout should only be activated during training (train), not evaluation or prediction (test)
+    # need to create 2 logits to share the same weights
 
-    # ConvNet:
-    logits_train = conv_net(features, in_height, in_width, num_classes, dropout, reuse=False, is_training=True)
-    logits_test = conv_net(features, in_height, in_width, num_classes, dropout, reuse=True, is_training=False)
+    ##################################################################
+    # LeNet: activated by default
+    logits_train = le_net(features, in_height, in_width, num_classes, dropout, reuse=False, is_training=True)
+    logits_test = le_net(features, in_height, in_width, num_classes, dropout, reuse=True, is_training=False)
 
-    # # AlexNet:
-    # logits_train = alex_net(features, in_height, in_width, num_classes, dropout, reuse=False, is_training=True)
-    # logits_test = alex_net(features, in_height, in_width, num_classes, dropout, reuse=True, is_training=False)
+    # ConvNet: uncomment the two rows below to activate
+    # logits_train = conv_net(features, in_height, in_width, num_classes, dropout, reuse=False, is_training=True)
+    # logits_test = conv_net(features, in_height, in_width, num_classes, dropout, reuse=True, is_training=False)
+    ##################################################################
 
     # Predictions
-    pred_classes = tf.argmax(logits_test, axis=1)
-    pred_probas = tf.nn.softmax(logits_test)
+    pred_classes = tf.argmax(logits_test, axis=1)   # output is class label
+    pred_probas = tf.nn.softmax(logits_test)        # output is probabilities of being each class
 
-    # If prediction mode, early return
+    # Output probabilities for prediction
     if mode == tf.estimator.ModeKeys.PREDICT:
         return tf.estimator.EstimatorSpec(mode, predictions=pred_probas)
 
-        # Define loss and optimizer
+    # Define loss and optimizer
     loss_op = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
-        logits=logits_train, labels=tf.cast(labels, dtype=tf.int32)))
+        logits=logits_train,
+        labels=tf.cast(labels, dtype=tf.int32)))
+
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+
     train_op = optimizer.minimize(loss_op,
                                   global_step=tf.train.get_global_step())
 
     # Evaluate the accuracy of the model
     acc_op = tf.metrics.accuracy(labels=labels, predictions=pred_classes)
 
-    print("Current accuracy of model", acc_op)
-
-    # TF Estimators requires to return a EstimatorSpec, that specify
-    # the different ops for training, evaluating, ...
     estim_specs = tf.estimator.EstimatorSpec(
         mode=mode,
         predictions=pred_classes,
@@ -57,6 +53,3 @@ def model_fn(features, labels, mode):
         eval_metric_ops={'accuracy': acc_op})
 
     return estim_specs
-
-
-
