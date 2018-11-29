@@ -1,1 +1,1 @@
-# cs5242-project
+# Neural Networks - malware detection
